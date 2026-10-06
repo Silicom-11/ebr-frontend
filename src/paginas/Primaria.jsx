@@ -115,7 +115,7 @@ export function MiDia() {
       </div>
 
       <h2 style={{ fontSize: 19, fontWeight: 900, color: 'var(--az-900)', marginBottom: 14 }}>Mis cursos</h2>
-      <div className="n-rejilla n-3">
+      <div className="n-rejilla auto">
         {CURSOS.map((c) => <TarjetaCurso key={c.slug} c={c} />)}
       </div>
     </>
@@ -130,7 +130,7 @@ export function Cursos() {
       <p style={{ fontSize: 14.5, color: 'var(--txt-2)', fontWeight: 600, marginBottom: 20 }}>
         Tercero de Primaria lleva 5 áreas. Desde 5.º grado se suma Razonamiento Matemático.
       </p>
-      <div className="n-rejilla n-3">
+      <div className="n-rejilla auto">
         {CURSOS.map((c) => <TarjetaCurso key={c.slug} c={c} />)}
       </div>
       <div className="n-pie">

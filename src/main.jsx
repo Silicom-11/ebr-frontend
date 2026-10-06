@@ -6,6 +6,7 @@ import App from './App.jsx';
 import './styles/app.css';
 import './styles/matricula.css';
 import './styles/ninos.css';
+import './styles/ajustes.css';
 
 /* Al cambiar de ruta la vista vuelve arriba: si no, al entrar a una
    pantalla desde el pie de otra se queda a media página. */

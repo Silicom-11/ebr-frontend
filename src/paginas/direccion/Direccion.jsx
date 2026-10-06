@@ -6,6 +6,7 @@ import {
   Cabecera, Tarjeta, Metrica, Tabla, Pil, PilEstado, Aviso, Persona, Lit,
   BarraProg, Campo, Selector, Check, Filtros, Filtro, Accion, Fichas, Vacio,
   Barras, Anillo, BarrasApiladas, Segmento, VerMas,
+  Ctx, CtxCaja, CtxLista, CtxPasos, Herramientas,
 } from '../../componentes/ui.jsx';
 import {
   IcMas, IcCheck, IcDer, IcCarnet, IcNota, IcImprimir, IcDescarga, IcFamilia,
@@ -254,7 +255,16 @@ export function CalPeriodos() {
       <Cabecera titulo="Periodos del año" desc="Cada bimestre abre y cierra la carga de notas, la asistencia y las boletas.">
         <Accion a="/direccion/calendarizacion/periodos/nuevo" t="Nuevo periodo" ico={IcMas} estilo="btn-1" />
       </Cabecera>
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Periodos del año" val="4" nota="régimen bimestral" icono={IcCalendario} />
+        <Metrica et="Cerrados" val="2" nota="I y II · ya con boletas" icono={IcCheck} />
+        <Metrica et="En curso" val="III" nota="cierra el 09/10" icono={IcReloj} acento />
+        <Metrica et="Semanas lectivas" val="39" nota="mínimo exigido 36" icono={IcCalendario} />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Los cuatro bimestres" sub="El estado gobierna qué puede editarse en todo el sistema" pegado>
         <Tabla
           cols={[
             { t: 'Periodo', r: (p) => <b>{p.nom}</b> },
@@ -267,6 +277,24 @@ export function CalPeriodos() {
           filas={PERIODOS}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Qué hace un periodo" ico={IcInfo}>
+            <CtxPasos pasos={[
+              'Al abrirse, habilita la carga de notas y de asistencia a los docentes de todos los salones.',
+              'Durante el periodo, el panel de supervisión muestra el avance de carga docente por docente.',
+              'Al cerrarse, bloquea la edición y habilita la emisión de boletas y consolidados.',
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Reglas vigentes" ico={IcEscudoOk}>
+            <CtxLista datos={[
+              ['Régimen', 'Bimestral'],
+              ['Cierre de notas', '09/10/2026'],
+              ['Prórroga máxima', '5 días hábiles'],
+              ['Quién la aprueba', 'Dirección'],
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -360,7 +388,8 @@ export function Ciclos() {
   return (
     <>
       <Cabecera titulo="Ciclos institucionales" desc="Los ciclos coinciden con los del CNEB. La institución trabaja del II al VII." />
-      <Tarjeta pegado>
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Del ciclo II al VII" sub="65 estudiantes repartidos en 6 ciclos" pegado>
         <Tabla
           cols={[
             { t: 'Ciclo', r: (x) => <b>{x.ciclo}</b> },
@@ -372,6 +401,24 @@ export function Ciclos() {
           filas={c}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Por qué importa el ciclo" ico={IcInfo}>
+            <p>El CNEB organiza las competencias <b>por ciclo</b>, no por grado. Dos grados del
+            mismo ciclo comparten los mismos estándares de aprendizaje, y por eso pueden
+            trabajar juntos en un aula multigrado.</p>
+            <p>Es lo que permite que EBR 1.º-2.º y EBR 3.º-5.º funcionen como un solo salón
+            sin incumplir la norma.</p>
+          </CtxCaja>
+          <CtxCaja titulo="Reparto" ico={IcUsuarios}>
+            <CtxLista datos={[
+              ['Ciclo II · Inicial', '9 estudiantes'],
+              ['Ciclos III a V · Primaria', '36 estudiantes'],
+              ['Ciclos VI y VII · Secundaria', '20 estudiantes'],
+              ['Aulas multigrado', '2 salones'],
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -493,7 +540,15 @@ export function Asignacion() {
       <Cabecera titulo="Asignación de docentes" desc="Define qué docente dicta qué curso en qué salón. Es una decisión de carga laboral y solo la toma la Dirección.">
         <Accion a="/direccion/cursos/asignacion/nueva" t="Nueva asignación" ico={IcMas} estilo="btn-1" />
       </Cabecera>
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Docentes" val="6" nota="para 11 salones" icono={IcUsuarios} />
+        <Metrica et="Asignaciones" val="53" nota="curso por salón" icono={IcLibro} />
+        <Metrica et="Carga máxima" val="15" nota="María Acuña · todo Inicial" icono={IcAlerta} acento />
+        <Metrica et="Sin cubrir" val="0" nota="todos los cursos tienen docente" icono={IcCheck} />
+      </div>
+
+      <Tarjeta titulo="Carga por docente" sub="Cursos asignados sobre el máximo institucional" pegado>
         <Tabla
           cols={[
             { t: 'Docente', r: (d) => <Persona nom={d.nom} sub={d.esp} a={`/direccion/usuarios/${d.id}`} /> },
@@ -879,7 +934,16 @@ export function Justificaciones() {
   return (
     <>
       <Cabecera titulo="Justificaciones" desc="El docente registra la solicitud; la aprueba la Dirección. Es uno de los permisos que no se delegan." />
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Del mes" val="3" nota="setiembre" icono={IcPortapapeles} />
+        <Metrica et="Aprobadas" val="2" icono={IcCheck} />
+        <Metrica et="Por resolver" val="1" nota="esperando a Dirección" icono={IcAlerta} acento />
+        <Metrica et="Plazo para presentar" val="48 h" nota="desde la inasistencia" icono={IcReloj} />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Solicitudes" sub="Ordenadas por fecha de inasistencia" pegado>
         <Tabla
           cols={[
             { t: 'N.º', r: (x) => <Link to={`/direccion/asistencia/justificaciones/${x.id}`} className="enl">{x.id}</Link> },
@@ -892,6 +956,21 @@ export function Justificaciones() {
           filas={j}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="El circuito" ico={IcInfo}>
+            <CtxPasos pasos={[
+              'El apoderado entrega el sustento al docente o en Secretaría.',
+              'El docente registra la solicitud con el motivo y adjunta el documento.',
+              'Dirección la aprueba o la rechaza; solo entonces la falta deja de contar.',
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Efecto en el sistema" ico={IcCheck}>
+            <p>Una falta justificada <b>sigue siendo falta</b> para el conteo de asistencia,
+            pero no activa la alerta de riesgo ni aparece en el reporte a la UGEL como
+            inasistencia injustificada.</p>
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -965,7 +1044,16 @@ export function Plazos() {
   return (
     <>
       <Cabecera titulo="Plazos de carga" desc="Fechas límite para que el docente registre notas y conclusiones de cada periodo." />
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Plazo vigente" val="09/10" nota="bimestre III" icono={IcCalendario} acento />
+        <Metrica et="Días restantes" val="3" nota="hábiles" icono={IcReloj} />
+        <Metrica et="Docentes al día" val="3" unidad=" / 6" pct={50} icono={IcCheck} />
+        <Metrica et="Prórrogas abiertas" val="1" nota="por resolver" icono={IcAlerta} />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Calendario de cierres" sub="Un plazo por periodo, igual para los tres niveles" pegado>
         <Tabla
           cols={[
             { t: 'Periodo', r: (p) => <b>{p.nom}</b> },
@@ -976,6 +1064,24 @@ export function Plazos() {
           filas={PERIODOS}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Qué pasa al vencer" ico={IcCandado}>
+            <CtxPasos pasos={[
+              'El sistema bloquea la edición de notas y conclusiones del periodo.',
+              'El docente que no llegó solicita una prórroga indicando el motivo.',
+              'Dirección la resuelve: si la aprueba, se reabre solo ese curso y ese salón.',
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Regla institucional" ico={IcEscudoOk}>
+            <CtxLista datos={[
+              ['Aviso previo', '7 días antes'],
+              ['Recordatorio', '2 días antes'],
+              ['Prórroga máxima', '5 días hábiles'],
+              ['Quién la aprueba', 'Dirección'],
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -1010,7 +1116,16 @@ export function Prorrogas() {
   return (
     <>
       <Cabecera titulo="Prórrogas" desc="El docente la solicita con motivo; la aprueba o la rechaza la Dirección." />
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Solicitudes del año" val="7" icono={IcPortapapeles} />
+        <Metrica et="Aprobadas" val="5" nota="71 % de las resueltas" icono={IcCheck} />
+        <Metrica et="Rechazadas" val="1" nota="fuera de plazo" icono={IcAlerta} />
+        <Metrica et="Pendientes" val="1" nota="requiere su decisión" icono={IcReloj} acento />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Solicitudes" sub="De la más reciente a la más antigua" pegado>
         <Tabla
           cols={[
             { t: 'N.º', r: (p) => <Link to={`/direccion/supervision/prorrogas/${p.id}`} className="enl">{p.id}</Link> },
@@ -1024,6 +1139,20 @@ export function Prorrogas() {
           filas={PRORROGAS}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Criterio para aprobar" ico={IcInfo}>
+            <p>Se aprueba cuando el motivo es <b>externo y verificable</b>: licencia por salud,
+            capacitación convocada por la UGEL o una actividad institucional que desplazó
+            sesiones.</p>
+            <p>Se rechaza cuando la solicitud llega <b>después</b> del vencimiento, porque
+            entonces ya no es una prórroga sino una regularización.</p>
+          </CtxCaja>
+          <CtxCaja titulo="Lo que no puede hacer el docente" ico={IcCandado}>
+            <p>Solicitar la prórroga es la única parte del circuito que le corresponde.
+            No puede aprobarse la suya ni la de un colega.</p>
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -1120,7 +1249,16 @@ export function Cobros() {
   return (
     <>
       <Cabecera titulo="Configuración de cobros" desc="Define los conceptos y los montos que el módulo de matrícula aplica." />
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Matrícula" val="S/ 250" nota="pago único" icono={IcCarnet} />
+        <Metrica et="Pensión" val="S/ 180" nota="10 cuotas" icono={IcMoneda} acento />
+        <Metrica et="Cuota de ingreso" val="—" nota="la institución no la cobra" icono={IcCheck} />
+        <Metrica et="Ingreso anual previsto" val="S/ 133 250" nota="65 estudiantes" icono={IcGrafico} />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Conceptos vigentes" sub="Son los que lee el paso 6 del asistente de matrícula" pegado>
         <Tabla
           cols={[
             { t: 'Concepto', r: (c) => <b>{c.concepto}</b> },
@@ -1132,10 +1270,21 @@ export function Cobros() {
           filas={COBROS}
         />
       </Tarjeta>
-      <div style={{ marginTop: 15 }}>
-        <Aviso t="info" titulo="La institución no cobra cuota de ingreso.">
-          Es un dato levantado en la visita; queda explícito para que nadie lo configure por error.
-        </Aviso>
+        <Ctx>
+          <CtxCaja titulo="Cronograma de la pensión" ico={IcCalendario}>
+            <CtxLista datos={[
+              ['Primera cuota', '5 de marzo'],
+              ['Última cuota', '5 de diciembre'],
+              ['Número de cuotas', '10'],
+              ['Vencimiento', 'Día 5 de cada mes'],
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Dato levantado en la visita" ico={IcInfo}>
+            <p>La institución <b>no cobra cuota de ingreso</b>. Queda explícito en la
+            configuración para que nadie la active por error.</p>
+            <p>Los montos están pendientes de confirmación formal con la Dirección.</p>
+          </CtxCaja>
+        </Ctx>
       </div>
     </>
   );
@@ -1147,7 +1296,16 @@ export function Becas() {
       <Cabecera titulo="Becas y descuentos" desc="Se aplican sobre la pensión mensual.">
         <Accion a="/direccion/finanzas/becas/nueva" t="Nuevo descuento" ico={IcMas} estilo="btn-1" />
       </Cabecera>
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Tipos vigentes" val="4" icono={IcMoneda} />
+        <Metrica et="Beneficiarios" val="16" unidad=" / 65" nota="25 % del alumnado" pct={25} icono={IcUsuarios} />
+        <Metrica et="Descuento mensual" val="S/ 612" nota="sobre la pensión" icono={IcGrafico} acento />
+        <Metrica et="Mayor descuento" val="50 %" nota="hijo de personal" icono={IcAlerta} />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Descuentos aprobados" sub="Se aplican automáticamente al generar la cuota" pegado>
         <Tabla
           cols={[
             { t: 'Tipo', r: (b) => <b>{b.tipo}</b> },
@@ -1158,6 +1316,20 @@ export function Becas() {
           filas={BECAS}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Cómo se aplican" ico={IcInfo}>
+            <CtxPasos pasos={[
+              'El descuento se asocia al estudiante en su ficha de matrícula.',
+              'Al generar la cuota del mes, el sistema lo descuenta de los S/ 180 de pensión.',
+              'Los descuentos no se acumulan: si aplican dos, se toma el mayor.',
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Base" ico={IcEscudoOk}>
+            <p>Los cuatro descuentos son <b>acuerdos de Dirección</b>, no becas del Estado.
+            La institución no participa en programas de beca pública.</p>
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -1199,7 +1371,16 @@ export function Devoluciones() {
   return (
     <>
       <Cabecera titulo="Retiros y devoluciones" desc="Cuando un estudiante se retira, el sistema calcula el saldo a favor." />
-      <Tarjeta pegado>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Devoluciones del año" val="2" icono={IcMoneda} />
+        <Metrica et="Importe devuelto" val="S/ 270" icono={IcGrafico} />
+        <Metrica et="Plazo de atención" val="15" unidad=" días" nota="hábiles desde la solicitud" icono={IcReloj} />
+        <Metrica et="Pendientes" val="0" icono={IcCheck} acento />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Devoluciones registradas" sub="Saldo a favor por retiro o traslado" pegado>
         <Tabla
           cols={[
             { t: 'N.º', r: (x) => <b>{x.id}</b> },
@@ -1212,6 +1393,24 @@ export function Devoluciones() {
           filas={d}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Cómo se calcula" ico={IcInfo}>
+            <CtxPasos pasos={[
+              'Se registra el retiro y la fecha efectiva en el módulo de matrícula.',
+              'El sistema anula las cuotas de los meses posteriores a esa fecha.',
+              'Si hubo pago adelantado, la diferencia pasa a devolución.',
+            ]} />
+          </CtxCaja>
+          <CtxCaja titulo="Lo que no se devuelve" ico={IcCandado}>
+            <CtxLista datos={[
+              ['Matrícula', 'No se devuelve'],
+              ['Mes en curso', 'No se devuelve'],
+              ['Meses posteriores', 'Sí se devuelve'],
+              ['Cuota de ingreso', 'No se cobra'],
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -1221,6 +1420,14 @@ export function Utiles() {
   return (
     <>
       <Cabecera titulo="Lista de útiles" desc="Por nivel. Se publica a las familias desde el portal." />
+
+      <div style={{ marginBottom: 16 }}>
+        <Aviso t="oro" titulo="La lista de Inicial es la más corta y la más específica.">
+          No lleva cuadernos de trabajo ni diccionario: a los 3 años el material es manipulable
+          —plastilina, colores gruesos, mandil— porque la jornada se basa en el juego y no en la escritura.
+        </Aviso>
+      </div>
+
       <div className="rejilla r-3">
         {Object.entries(UTILES).map(([n, l]) => (
           <Tarjeta key={n} titulo={n} sub={`${l.length} elementos`} acciones={<Accion a={`/direccion/recursos/utiles/${n.toLowerCase()}`} t="Editar" peq />}>

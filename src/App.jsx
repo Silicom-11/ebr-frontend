@@ -8,6 +8,7 @@ import Armazon from './componentes/Armazon.jsx';
 
 import Inicio from './paginas/Inicio.jsx';
 import Mapa from './paginas/Mapa.jsx';
+import Guion from './paginas/Guion.jsx';
 import Buscar from './paginas/Buscar.jsx';
 
 import * as M from './paginas/direccion/Matricula.jsx';
@@ -22,6 +23,7 @@ export default function App() {
       {/* ---------------------------------------------------- generales */}
       <Route path="/" element={<Inicio />} />
       <Route path="/mapa" element={<Mapa />} />
+      <Route path="/guion" element={<Guion />} />
       <Route path="/buscar" element={<Buscar />} />
       <Route path="/permisos" element={<Armazon rol="direccion" />}>
         <Route index element={<D.MatrizPermisos />} />

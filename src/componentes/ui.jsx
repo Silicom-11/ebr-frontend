@@ -324,3 +324,36 @@ export const Accion = ({ a, t, ico: Ico, estilo = 'btn-2', peq }) => (
 export const VerMas = ({ a, t = 'Ver todo' }) => (
   <Link to={a} className="btn btn-3 btn-s">{t}<IcDer /></Link>
 );
+
+/* --------------------------------------------------------------- contexto
+   Columna estrecha que acompana a una tabla y explica la regla que gobierna
+   la pantalla. Es lo que diferencia una lista suelta de una vista disenada. */
+export const Ctx = ({ children }) => <aside className="ctx">{children}</aside>;
+
+export function CtxCaja({ titulo, ico: Ico, children }) {
+  return (
+    <div className="ctx-caja">
+      {titulo && <h4>{Ico && <Ico />}{titulo}</h4>}
+      {children}
+    </div>
+  );
+}
+
+export const CtxLista = ({ datos }) => (
+  <div className="ctx-lista">
+    {datos.map(([k, v]) => (
+      <div key={k}><span className="k">{k}</span><span className="v">{v}</span></div>
+    ))}
+  </div>
+);
+
+export const CtxPasos = ({ pasos }) => (
+  <div className="ctx-pasos">{pasos.map((p, i) => <div key={i}>{p}</div>)}</div>
+);
+
+export const Herramientas = ({ cuenta, children }) => (
+  <div className="herram no-imp">
+    {cuenta && <span className="cuenta">{cuenta}</span>}
+    <div className="der">{children}</div>
+  </div>
+);

@@ -75,6 +75,7 @@ export default function Armazon({ rol }) {
 
       <div className="principal">
         <header className="barra">
+          <div className="barra-in">
           <Migas menu={menu} ruta={loc.pathname} />
           <div className="der no-imp">
             <Link to="/buscar" className="buscador">
@@ -88,6 +89,7 @@ export default function Armazon({ rol }) {
               <span className="et">Ver como</span>{r.nom}<IcAbajo />
             </Link>
             <Link to="/" className="icono-btn" aria-label="Cambiar de rol"><IcSalir /></Link>
+          </div>
           </div>
         </header>
 
@@ -105,20 +107,22 @@ export function ArmazonNino({ nivel, alumno, menu, saludo }) {
   return (
     <div className={`nino${nivel === 'inicial' ? ' n-ini' : ''}`}>
       <header className="n-barra">
-        <EscudoSVG size={38} />
-        <div className="marca">
-          <b>SIGAC</b>
-          <span>{IE.nombre}</span>
-        </div>
-        <div className="der">
-          <div className="quien">
-            <span className="n-cara">{saludo}</span>
-            <span>
-              <b>{alumno.nom.split(' ')[0]}</b>
-              <span>{alumno.grado} · {alumno.nivel}</span>
-            </span>
+        <div className="n-barra-in">
+          <EscudoSVG size={38} />
+          <div className="marca">
+            <b>SIGAC</b>
+            <span>{IE.nombre}</span>
           </div>
-          <Link to="/" className="salir">Salir</Link>
+          <div className="der">
+            <div className="quien">
+              <span className="n-cara">{saludo}</span>
+              <span>
+                <b>{alumno.nom.split(' ')[0]}</b>
+                <span>{alumno.grado} · {alumno.nivel}</span>
+              </span>
+            </div>
+            <Link to="/" className="salir">Salir</Link>
+          </div>
         </div>
       </header>
       <nav className="n-menu">

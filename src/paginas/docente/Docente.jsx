@@ -10,6 +10,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import {
   Cabecera, Tarjeta, Metrica, Tabla, Pil, PilEstado, Aviso, Persona, Lit,
   BarraProg, Campo, Selector, Accion, Fichas, Anillo, VerMas, Filtros, Filtro,
+  Ctx, CtxCaja, CtxLista, CtxPasos, Herramientas,
 } from '../../componentes/ui.jsx';
 import {
   IcCheck, IcDer, IcNota, IcPortapapeles, IcAlerta, IcLibro, IcCalendario,
@@ -87,12 +88,19 @@ export function MisCursos() {
   return (
     <>
       <Cabecera titulo="Mis cursos" desc="Solo lectura. El plan de estudios lo aprueba la Dirección; aquí se consulta la ficha y se entra a evaluar." />
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Mis salones" val="2" nota="3.º y 4.º de Primaria" icono={IcLibro} />
+        <Metrica et="Mis cursos" val={filas.length} nota="5 áreas por salón" icono={IcPortapapeles} />
+        <Metrica et="Mis estudiantes" val="12" nota="9 + 3" icono={IcCheck} />
+        <Metrica et="Cursos al día" val="7" unidad={` / ${filas.length}`} pct={70} icono={IcNota} acento />
+      </div>
+
       <div style={{ marginBottom: 16 }}>
         <Aviso t="alerta" titulo="No puede crear ni eliminar cursos.">
           Este módulo es de consulta. Si falta un curso o la asignación está mal, se solicita a Dirección.
         </Aviso>
       </div>
-      <Tarjeta titulo={`${filas.length} cursos asignados`} pegado>
+      <Tarjeta titulo={`${filas.length} cursos asignados`} sub="Pulse Evaluar para entrar al registro por competencias" pegado>
         <Tabla
           cols={[
             { t: 'Curso', r: (f) => <b>{f.c}</b> },
@@ -252,8 +260,18 @@ export function EvalMensual() {
   const datos = notasDe(MIS[0].cod, 'Matemática');
   return (
     <>
-      <Cabecera titulo="Evaluación mensual" desc="Consolida sus semanas. Ponderación 70 / 30 definida por la Dirección." />
-      <Tarjeta titulo={`${MIS[0].nom} · Matemática · setiembre`} pegado>
+      <Cabecera titulo="Evaluación mensual" desc="Consolida sus semanas. Ponderación 70 / 30 definida por la Dirección.">
+        <Accion a="/docente/evaluacion/mensual" t="Guardar" ico={IcCheck} estilo="btn-1" />
+      </Cabecera>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Promedio del salón" val="15.1" nota="logro esperado" icono={IcNota} />
+        <Metrica et="En AD" val="2" unidad=" / 9" icono={IcCheck} />
+        <Metrica et="En C" val="1" unidad=" / 9" nota="requiere acompañamiento" icono={IcAlerta} acento />
+        <Metrica et="Cargado" val="9" unidad=" / 9" pct={100} icono={IcCheck} />
+      </div>
+
+      <Tarjeta titulo={`${MIS[0].nom} · Matemática · setiembre`} sub="70 % evaluación semanal · 30 % evaluación mensual" pegado>
         <Tabla
           cols={[
             { t: 'Estudiante', r: (d) => <Persona nom={d.alu.completo} /> },
@@ -331,7 +349,15 @@ export function Incidencias() {
       <Cabecera titulo="Incidencias de conducta" desc="Solo de sus estudiantes.">
         <Accion a="/docente/incidencias/nueva" t="Registrar" ico={IcMas} estilo="btn-1" />
       </Cabecera>
-      <Tarjeta pegado>
+
+      <div className="rejilla r-3" style={{ marginBottom: 16 }}>
+        <Metrica et="Registradas este mes" val="2" nota="ambas leves" icono={IcPortapapeles} />
+        <Metrica et="Estudiantes implicados" val="2" unidad=" / 12" icono={IcAlerta} />
+        <Metrica et="Casos derivados" val="0" nota="ninguno requirió a Dirección" icono={IcCheck} acento />
+      </div>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Mis registros" sub="3.º y 4.º de Primaria" pegado>
         <Tabla
           cols={[
             { t: 'Fecha', r: (x) => <span className="tenue">{x.f}</span> },
@@ -345,6 +371,18 @@ export function Incidencias() {
           ]}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Qué registrar y qué no" ico={IcInfo}>
+            <p>Se registra el <b>hecho observable</b>, no una valoración de la persona.
+            «No trajo el material» es un hecho; «es desordenado» no lo es.</p>
+            <p>Una incidencia moderada o grave notifica a Dirección automáticamente.</p>
+          </CtxCaja>
+          <CtxCaja titulo="En Inicial no aplica" ico={IcCandado}>
+            <p>A los 3, 4 y 5 años el sistema usa el registro de observación de la docente,
+            no un parte disciplinario.</p>
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -362,7 +400,8 @@ export function Prorrogas() {
           Es la única acción del flujo de prórrogas que le corresponde al docente.
         </Aviso>
       </div>
-      <Tarjeta pegado>
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Mis solicitudes" sub="Historial del año" pegado>
         <Tabla
           cols={[
             { t: 'N.º', r: (p) => <b>{p.id}</b> },
@@ -376,6 +415,22 @@ export function Prorrogas() {
           vacio="Sin prórrogas solicitadas."
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Cuándo pedirla" ico={IcInfo}>
+            <p>Cuando un hecho <b>externo y verificable</b> le impidió cubrir las sesiones:
+            licencia por salud, capacitación de la UGEL o una actividad institucional que
+            desplazó clases.</p>
+            <p>Pedirla <b>antes</b> del vencimiento. Después del 09/10 ya no es prórroga.</p>
+          </CtxCaja>
+          <CtxCaja titulo="Qué pasa si se aprueba" ico={IcCheck}>
+            <CtxPasos pasos={[
+              'Dirección reabre únicamente ese curso y ese salón.',
+              'Usted carga las notas dentro del nuevo plazo.',
+              'El sistema vuelve a bloquear al vencer la prórroga.',
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }
@@ -385,12 +440,16 @@ export function Calendario() {
   return (
     <>
       <Cabecera titulo="Calendario del año" desc="Solo consulta. La calendarización la configura la Dirección." />
-      <div style={{ marginBottom: 16 }}>
-        <Aviso t="info" titulo="Vista de solo lectura.">
-          Puede ver los días lectivos para planificar, pero no modificar el calendario.
-        </Aviso>
+
+      <div className="rejilla r-4" style={{ marginBottom: 16 }}>
+        <Metrica et="Días lectivos del año" val="195" icono={IcCalendario} />
+        <Metrica et="Mi jornada" val="6" unidad=" h" nota="Primaria · 1100 h al año" icono={IcReloj} />
+        <Metrica et="Periodo en curso" val="III" nota="cierra el 09/10" icono={IcCalendario} acento />
+        <Metrica et="Semanas restantes" val="10" nota="hasta fin de año" icono={IcCheck} />
       </div>
-      <Tarjeta titulo="Periodos" pegado>
+
+      <div className="rejilla r-23">
+        <Tarjeta titulo="Periodos del año" sub="Fechas que gobiernan su carga de notas" pegado>
         <Tabla
           cols={[
             { t: 'Periodo', r: (p) => <b>{p.nom}</b> },
@@ -401,6 +460,21 @@ export function Calendario() {
           filas={PERIODOS}
         />
       </Tarjeta>
+        <Ctx>
+          <CtxCaja titulo="Vista de solo lectura" ico={IcCandado}>
+            <p>Puede consultar los días lectivos para planificar sus sesiones, pero
+            <b> no modificar el calendario</b>: la calendarización afecta a toda la
+            institución y la configura la Dirección.</p>
+          </CtxCaja>
+          <CtxCaja titulo="Qué saca de aquí" ico={IcInfo}>
+            <CtxPasos pasos={[
+              'Cuántas sesiones reales tiene para cubrir sus competencias del mes.',
+              'Qué semanas son de gestión y no cuentan como lectivas.',
+              'Cuándo cierra el periodo, que es su fecha límite de carga.',
+            ]} />
+          </CtxCaja>
+        </Ctx>
+      </div>
     </>
   );
 }

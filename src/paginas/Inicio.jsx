@@ -103,6 +103,7 @@ export default function Inicio() {
         </div>
 
         <div className="ent-pie">
+          <Link to="/guion" className="btn btn-oro"><IcLista />Guion de la exposición</Link>
           <Link to="/mapa" className="btn btn-2"><IcLista />Mapa completo de rutas</Link>
           <Link to="/permisos" className="btn btn-2"><IcInfo />Qué puede hacer cada rol</Link>
         </div>

@@ -140,6 +140,7 @@ export const GRUPOS = [
       ['/permisos', 'Matriz de permisos por rol'],
       ['/buscar', 'Búsqueda'],
       ['/mapa', 'Este mapa'],
+      ['/guion', 'Guion de la exposicion: que decir en cada clic'],
     ],
   },
 ];
