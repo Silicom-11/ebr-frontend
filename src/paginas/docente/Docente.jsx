@@ -398,7 +398,7 @@ export function Calendario() {
             { t: 'Semanas', al: 'center', r: (p) => <span className="num">{p.semanas}</span> },
             { t: 'Estado', al: 'center', r: (p) => <PilEstado v={p.estado} /> },
           ]}
-          filas={[...PRORROGAS].slice(0, 0).length ? [] : require_periodos()}
+          filas={PERIODOS}
         />
       </Tarjeta>
     </>
