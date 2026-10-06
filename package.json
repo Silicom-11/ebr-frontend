@@ -1,0 +1,22 @@
+{
+  "name": "sigac-ebr-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SIGAC — Sistema Integrado de Gestion Academica. Prototipo de alta fidelidad, I.E.P. Continental Americano.",
+  "scripts": {
+    "dev": "vite --port 5180",
+    "build": "vite build",
+    "preview": "vite preview --port 5180",
+    "rutas": "node scripts/listar-rutas.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.8"
+  }
+}
